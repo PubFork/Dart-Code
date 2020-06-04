@@ -1,4 +1,4 @@
 {
 	"files.insertFinalNewline": true,
-	"dart.maxLogLineLength": 500000
+	"dart.maxLogLineLength": 50000000
 }
