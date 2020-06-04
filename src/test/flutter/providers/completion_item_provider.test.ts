@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import * as vs from "vscode";
+import { waitFor } from "../../../shared/utils/promises";
 import { activate, ensureCompletion, extApi, flutterHelloWorldMainFile, getCompletionsAt, getPackages, openFile, setTestContent } from "../../helpers";
 
 describe("completion_item_provider", () => {
@@ -10,7 +11,12 @@ describe("completion_item_provider", () => {
 
 	it("includes expected completions", async () => {
 		await openFile(flutterHelloWorldMainFile);
-		const completions = await getCompletionsAt("return ^Text");
+		let completions: vs.CompletionItem[] = [];
+
+		await waitFor(async () => {
+			completions = await getCompletionsAt("return ^Text");
+			return completions.find((item) => item.label === "Text(…)");
+		}, 1000, 30000);
 
 		extApi.logger.info(`######### DID GET ${completions.length} completions!`);
 		const comps = completions.filter((c) => c.label.startsWith("Text"));
