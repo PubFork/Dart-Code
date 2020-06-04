@@ -12,6 +12,13 @@ describe("completion_item_provider", () => {
 		await openFile(flutterHelloWorldMainFile);
 		const completions = await getCompletionsAt("return ^Text");
 
+		extApi.logger.info(`######### DID GET ${completions.length} completions!`);
+		const comps = completions.filter((c) => c.label.startsWith("Text"));
+		extApi.logger.info(`######### DID GET ${comps.length} that start with Text!`);
+		for (const c of comps) {
+			extApi.logger.info(`######### ${c.label}/${c.kind}/${c.filterText}`);
+		}
+
 		ensureCompletion(completions, vs.CompletionItemKind.Constructor, "Text(…)", "Text");
 		ensureCompletion(completions, vs.CompletionItemKind.Constructor, "Text.rich(…)", "Text.rich");
 		ensureCompletion(completions, vs.CompletionItemKind.Constructor, "Padding(…)", "Padding");
